@@ -1,10 +1,12 @@
 class Car{
     constructor(x,y,width,height){
+
         this.x=x;
         this.y=y;
         this.width=width;
         this.height=height;
 
+        //to make movements more naturally
         this.speed=0;
         this.acceleration=0.2;
         this.maxSpeed=3;
@@ -19,6 +21,7 @@ class Car{
     }
 
     #move(){
+
         if(this.controls.forward){
             this.speed+=this.acceleration;
         }
@@ -26,23 +29,30 @@ class Car{
             this.speed-=this.acceleration;
         }
 
+        //max speed
         if(this.speed>this.maxSpeed){
             this.speed=this.maxSpeed;
         }
+        //max speed for going backward
         if(this.speed<-this.maxSpeed/2){
             this.speed=-this.maxSpeed/2;
         }
-
+        
+        //friction
         if(this.speed>0){
             this.speed-=this.friction;
         }
+        //friction for going backward
         if(this.speed<0){
             this.speed+=this.friction;
         }
+
+        //to prevent infinite movement
         if(Math.abs(this.speed)<this.friction){
             this.speed=0;
         }
 
+        //to turn right or left while going forward or backward
         if(this.speed!=0){
             const flip=this.speed>0?1:-1;
             if(this.controls.left){
@@ -53,11 +63,13 @@ class Car{
             }
         }
 
+        //calculating speed in x, y
         this.x-=Math.sin(this.angle)*this.speed;
         this.y-=Math.cos(this.angle)*this.speed;
     }
 
     draw(ctx){
+
         ctx.save();
         ctx.translate(this.x,this.y);
         ctx.rotate(-this.angle);
@@ -73,4 +85,5 @@ class Car{
 
         ctx.restore();
     }
+
 }
